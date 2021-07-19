@@ -8,7 +8,8 @@ def silence_cutter(filename, split_filename="분할_", filetype="wav"):
 
     # 전체 파일에서 가장 소리가 큰 값의 dBFS를 저장(normalize 위해)
     max_dBFS = file.max_dBFS
-
+    print("파일의 dBFS값 :", max_dBFS)
+    
     # split_on_silence(
     #   audio_segment : 파일,
     #   min_silence_len : 탐지하는 silence의 최소 시간,
@@ -36,8 +37,5 @@ if __name__ == '__main__':
     fileName = input()
     print("확장자를 입력하세요. (. 없이, ex. wav, mp3)")
     ext = input()
-    
-    song = AudioSegment.from_file(fileName + "." + ext, format=ext)
-    print("파일의 dBFS값 :", song.max_dBFS)
     
     silence_cutter(fileName + "." + ext)
