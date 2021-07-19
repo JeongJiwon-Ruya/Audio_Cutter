@@ -32,7 +32,12 @@ def silence_cutter(filename, split_filename="분할_", filetype="wav"):
 
 if __name__ == '__main__':
 
-    song = AudioSegment.from_file("sample_21.wav", format="wav")
+    print("파일 제목을 입력하세요. (확장자 없이, ex. sample.wav -> sample 입력)")
+    fileName = input()
+    print("확장자를 입력하세요. (. 없이, ex. wav, mp3)")
+    ext = input()
+    
+    song = AudioSegment.from_file(fileName + "." + ext, format=ext)
     print("파일의 dBFS값 :", song.max_dBFS)
-
-    silence_cutter("sample_21.wav")
+    
+    silence_cutter(fileName + "." + ext)
