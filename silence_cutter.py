@@ -15,11 +15,11 @@ def silence_cutter(filename, split_filename="분할_", filetype="wav"):
     #   min_silence_len : 탐지하는 silence의 최소 시간,
     #   silence_thresh : silence로 정의되는 소리의 크기,
     #   keep_silence : cut된 각 파일들 뒤에 붙는 silence의 길이)
-    chunks = split_on_silence(file, 300, -50, 500)
+    chunks = split_on_silence(file, 400, -50, 500)
 
-    print("분할될 파일의 개수 : ", len(chunks)-1)
+    print("분할될 파일의 개수 : ", len(chunks))
 
-    for chunk in chunks[1:]:
+    for chunk in chunks[0:]:
         # cut될 각 파일들을 max_dBFS를 사용하여 normalize한다.
         if max_dBFS >= chunk.max_dBFS:
             chunk = chunk - (chunk.max_dBFS - max_dBFS)
@@ -37,5 +37,7 @@ if __name__ == '__main__':
     fileName = input()
     print("확장자를 입력하세요. (. 없이, ex. wav, mp3)")
     ext = input()
+
+    print("파일명 :", fileName+"."+ext+"\n")
     
     silence_cutter(fileName + "." + ext)
