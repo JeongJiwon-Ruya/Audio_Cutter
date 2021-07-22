@@ -30,7 +30,24 @@ def silence_cutter(filename, split_filename="분할_", filetype="wav"):
         chunk.export(split_filename + str(count) + '.' + filetype, format(filetype))
         count += 1
 
+        
+def manual_normalize(filename, divide1, divide2, filetype="wav"):
+    print("manual_normalizing...")
+    count = 1
+    file = AudioSegment.from_file(filename, format=filetype)
+    max_dBFS = file.max_dBFS
+    
+    chunks = split_on_silence(file, 500, -50, 500)
 
+    sum = AudioSegment.empty()
+
+    for chunk in chunks[int(divide1)-1: int(divide2)]:
+        sum = sum + chunk
+
+    sum = sum - (sum.max_dBFS - max_dBFS)
+    sum.export("분할_"+divide1+'~'+divide2+'.'+filetype, format(filetype))
+
+    
 if __name__ == '__main__':
 
     print("파일 제목을 입력하세요. (확장자 없이, ex. sample.wav -> sample 입력)")
@@ -40,4 +57,16 @@ if __name__ == '__main__':
 
     print("파일명 :", fileName+"."+ext+"\n")
     
-    silence_cutter(fileName + "." + ext)
+    print("작업을 선택하세요.\n1.파일 분할\n2.나눠서 저장된 음성 합치기")
+    choice = input()
+
+    if(choice == "1"):
+        silence_cutter(fileName + "." + ext)
+    elif(choice == "2"):
+        print("시작파일번호를 입력하세요.")
+        div1 = input()
+        print("마지막파일번호를 입력하세요.")
+        div2 = input()
+        manual_normalize(fileName + "." + ext, div1, div2)
+    else :
+        exit()
